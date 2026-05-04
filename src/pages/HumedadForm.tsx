@@ -356,6 +356,42 @@ export default function ContHumedadForm() {
               </div>
             </div>
 
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_340px]">
+              <div className="overflow-hidden rounded-lg border border-slate-300">
+                <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900">
+                  Descripción de la muestra
+                </div>
+                <table className="w-full text-sm">
+                  <tbody>
+                    <tr><td className="w-[58%] border-b border-r border-slate-300 px-2 py-2">Tipo de muestra:</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tipo_muestra ?? ''} onChange={(e) => setField('tipo_muestra', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                    <tr><td className="border-b border-r border-slate-300 px-2 py-2">Condición de la muestra:</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.condicion_muestra ?? ''} onChange={(e) => setField('condicion_muestra', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                    <tr><td className="border-b border-r border-slate-300 px-2 py-2">Tamaño máximo de la partícula (visual) (in):</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tamano_maximo_muestra_visual_in ?? ''} onChange={(e) => setField('tamano_maximo_muestra_visual_in', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                    <tr><td className="border-r border-slate-300 px-2 py-2">Forma de la partícula:</td><td className="p-1"><input className={inputClass} value={form.forma_particula ?? ''} onChange={(e) => setField('forma_particula', e.target.value)} autoComplete="off" data-lpignore="true" placeholder="Ej: Angular 12" /></td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="overflow-hidden rounded-lg border border-slate-300">
+                <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-900">
+                  MÉTODO PRUEBA
+                </div>
+                <div className="p-3">
+                  <label className="mb-2 block text-sm text-center font-medium text-slate-700">MÉTODO &quot;A&quot; o &quot;B&quot;</label>
+                  <select
+                    className={inputClass}
+                    value={form.metodo_prueba ?? '-'}
+                    onChange={(e) => setField('metodo_prueba', e.target.value as ContHumedadPayload['metodo_prueba'])}
+                    autoComplete="off"
+                    data-lpignore="true"
+                  >
+                    {(['-', 'A', 'B'] as const).map((value) => (
+                      <option key={value} value={value}>{value}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
             <div className="overflow-hidden rounded-lg border border-slate-300">
               <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900">
                 Condiciones del ensayo
@@ -401,42 +437,6 @@ export default function ContHumedadForm() {
                     </tr>
                   </tbody>
                 </table>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_340px]">
-              <div className="overflow-hidden rounded-lg border border-slate-300">
-                <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900">
-                  Descripción de la muestra
-                </div>
-                <table className="w-full text-sm">
-                  <tbody>
-                    <tr><td className="w-[58%] border-b border-r border-slate-300 px-2 py-2">Tipo de muestra:</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tipo_muestra ?? ''} onChange={(e) => setField('tipo_muestra', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
-                    <tr><td className="border-b border-r border-slate-300 px-2 py-2">Condición de la muestra:</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.condicion_muestra ?? ''} onChange={(e) => setField('condicion_muestra', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
-                    <tr><td className="border-b border-r border-slate-300 px-2 py-2">Tamaño máximo de la partícula (visual) (in):</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tamano_maximo_muestra_visual_in ?? ''} onChange={(e) => setField('tamano_maximo_muestra_visual_in', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
-                    <tr><td className="border-r border-slate-300 px-2 py-2">Forma de la partícula:</td><td className="p-1"><input className={inputClass} value={form.forma_particula ?? ''} onChange={(e) => setField('forma_particula', e.target.value)} autoComplete="off" data-lpignore="true" placeholder="Ej: Angular 12" /></td></tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <div className="overflow-hidden rounded-lg border border-slate-300">
-                <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-900">
-                  MÉTODO PRUEBA
-                </div>
-                <div className="p-3">
-                  <label className="mb-2 block text-sm text-center font-medium text-slate-700">MÉTODO &quot;A&quot; o &quot;B&quot;</label>
-                  <select
-                    className={inputClass}
-                    value={form.metodo_prueba ?? '-'}
-                    onChange={(e) => setField('metodo_prueba', e.target.value as ContHumedadPayload['metodo_prueba'])}
-                    autoComplete="off"
-                    data-lpignore="true"
-                  >
-                    {(['-', 'A', 'B'] as const).map((value) => (
-                      <option key={value} value={value}>{value}</option>
-                    ))}
-                  </select>
-                </div>
               </div>
             </div>
 
