@@ -238,7 +238,7 @@ export default function ContHumedadForm() {
         const url = URL.createObjectURL(blob)
         const a = document.createElement('a')
         a.href = url
-        a.download = filename || `${buildFormatPreview(form.muestra, 'AG', 'HUM. SUELO')}.xlsx`
+        a.download = filename || `${buildFormatPreview(form.muestra, 'SU', 'HUM. SUELO')}.xlsx`
         a.click()
         URL.revokeObjectURL(url)
         if (returnedId) setEnsayoId(returnedId)
@@ -358,12 +358,15 @@ export default function ContHumedadForm() {
 
             <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_420px]">
               <div className="overflow-hidden rounded-lg border border-slate-300">
+                <div className="border-b border-slate-300 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-900">
+                  Condiciones del Ensayo
+                </div>
                 <table className="w-full text-sm">
                   <tbody>
                     <tr><td className="w-[58%] border-b border-r border-slate-300 px-2 py-1">* Tipo de muestra</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tipo_muestra ?? ''} onChange={(e) => setField('tipo_muestra', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
-                    <tr><td className="border-b border-r border-slate-300 px-2 py-1">* Tamano maximo de la muestra (Visual) (in)</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tamano_maximo_muestra_visual_in ?? ''} onChange={(e) => setField('tamano_maximo_muestra_visual_in', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                    <tr><td className="border-b border-r border-slate-300 px-2 py-1">* Tamaño máximo de la muestra (Visual) (in)</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tamano_maximo_muestra_visual_in ?? ''} onChange={(e) => setField('tamano_maximo_muestra_visual_in', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
                     <tr>
-                      <td className="border-b border-r border-slate-300 px-2 py-1">* La masa de la muestra cumple con lo requerido por la norma</td>
+                      <td className="border-b border-r border-slate-300 px-2 py-1">* La muestra de ensayo tiene una masa menor que la mínima requerida por la norma</td>
                       <td className="border-b border-slate-300 px-1 py-1">
                         <select
                           className={inputClass}
@@ -379,12 +382,12 @@ export default function ContHumedadForm() {
                       </td>
                     </tr>
                     <tr>
-                      <td className="border-b border-r border-slate-300 px-2 py-1">* Se excluyo algun material de la muestra de ensayo</td>
+                      <td className="border-b border-r border-slate-300 px-2 py-1">* La muestra de ensayo presenta más de un tipo de material (capas, etc.)</td>
                       <td className="border-b border-slate-300 px-1 py-1">
                         <select
                           className={inputClass}
-                          value={form.se_excluyo_material ?? '-'}
-                          onChange={(e) => setSelect('se_excluyo_material', e.target.value as SiNoSelect)}
+                          value={form.condicion_capas ?? '-'}
+                          onChange={(e) => setSelect('condicion_capas', e.target.value as SiNoSelect)}
                           autoComplete="off"
                           data-lpignore="true"
                         >
@@ -394,14 +397,19 @@ export default function ContHumedadForm() {
                         </select>
                       </td>
                     </tr>
-                    <tr><td className="border-r border-slate-300 px-2 py-1">Descripcion del material excluido</td><td className="p-1"><input className={inputClass} value={form.descripcion_material_excluido ?? ''} onChange={(e) => setField('descripcion_material_excluido', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                    <tr><td className="border-r border-slate-300 px-2 py-1">* La temperatura de secado es diferente a 110 ± 5°C</td><td className="border-r border-slate-300 px-1 py-1"><select className={inputClass} value={form.condicion_temperatura ?? '-'} onChange={(e) => setSelect('condicion_temperatura', e.target.value as SiNoSelect)} autoComplete="off" data-lpignore="true">{(['-', 'SI', 'NO'] as const).map((value) => (<option key={value} value={value}>{value}</option>))}</select></td></tr>
+                    <tr><td className="border-r border-slate-300 px-2 py-1">* Se excluyó algún material (tamaño y cantidad) de la muestra de prueba</td><td className="border-r border-slate-300 px-1 py-1"><select className={inputClass} value={form.se_excluyo_material ?? '-'} onChange={(e) => setSelect('se_excluyo_material', e.target.value as SiNoSelect)} autoComplete="off" data-lpignore="true">{(['-', 'SI', 'NO'] as const).map((value) => (<option key={value} value={value}>{value}</option>))}</select></td></tr>
+                    <tr><td className="border-r border-slate-300 px-2 py-1">Descripción material excluido</td><td className="p-1"><input className={inputClass} value={form.descripcion_material_excluido ?? ''} onChange={(e) => setField('descripcion_material_excluido', e.target.value)} autoComplete="off" data-lpignore="true" placeholder="Ej: Se excluyó grava &gt; 3 in, aprox. 450 g" /></td></tr>
                   </tbody>
                 </table>
               </div>
 
               <div className="overflow-hidden rounded-lg border border-slate-300">
+                <div className="border-b border-slate-300 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-900">
+                  Equipos utilizados
+                </div>
                 <table className="w-full text-sm">
-                  <thead className="bg-slate-100 text-xs font-semibold text-slate-800"><tr><th className="border-b border-r border-slate-300 py-1">Equipos utilizados</th><th className="border-b border-slate-300 py-1">Codigos</th></tr></thead>
+                  <thead className="bg-slate-100 text-xs font-semibold text-slate-800"><tr><th className="border-b border-r border-slate-300 py-1">Equipo</th><th className="border-b border-slate-300 py-1">Código</th></tr></thead>
                   <tbody>
                     <tr><td className="border-t border-r border-slate-300 px-2 py-1">Balanza 0.1 g</td><td className="border-t border-slate-300 p-1"><select className={inputClass} value={form.balanza_01g_codigo ?? '-'} onChange={(e) => setField('balanza_01g_codigo', e.target.value)}>{withCurrentOption(form.balanza_01g_codigo, EQUIPO_OPTIONS.balanza_01g_codigo).map((opt) => <option key={opt} value={opt}>{opt}</option>)}</select></td></tr>
                     <tr><td className="border-t border-r border-slate-300 px-2 py-1">Horno 110°C</td><td className="border-t border-slate-300 p-1"><select className={inputClass} value={form.horno_110c_codigo ?? '-'} onChange={(e) => setField('horno_110c_codigo', e.target.value)}>{withCurrentOption(form.horno_110c_codigo, EQUIPO_OPTIONS.horno_110c_codigo).map((opt) => <option key={opt} value={opt}>{opt}</option>)}</select></td></tr>
@@ -453,7 +461,7 @@ export default function ContHumedadForm() {
       </div>
         <FormatConfirmModal
             open={pendingFormatAction !== null}
-            formatLabel={buildFormatPreview(form.muestra, 'AG', 'HUM. SUELO')}
+            formatLabel={buildFormatPreview(form.muestra, 'SU', 'HUM. SUELO')}
             actionLabel={pendingFormatAction ? 'Guardar y Descargar' : 'Guardar'}
             onClose={() => setPendingFormatAction(null)}
             onConfirm={() => {
