@@ -165,3 +165,10 @@ export async function listHumedadCompleteDemoEnsayos(limit = 100): Promise<Humed
 export async function deleteHumedadCompleteDemoEnsayo(ensayoId: number): Promise<void> {
   await apiRequest(`/api/humedad-complete-demo/${ensayoId}`, { method: "DELETE" })
 }
+
+// Compatibility aliases so the Content Humedad frontend can be reused as-is.
+export const saveContHumedadEnsayo = saveHumedadCompleteDemoEnsayo
+export const saveAndDownloadContHumedadExcel = saveAndDownloadHumedadCompleteDemoExcel
+export const getContHumedadEnsayoDetail = getHumedadCompleteDemoEnsayoDetail
+export const listContHumedadEnsayos = listHumedadCompleteDemoEnsayos
+export const deleteContHumedadEnsayo = deleteHumedadCompleteDemoEnsayo

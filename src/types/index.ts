@@ -2,31 +2,36 @@ export type SiNo = "-" | "SI" | "NO"
 export type MetodoPrueba = "-" | "A" | "B"
 
 export interface HumedadCompleteDemoPayload {
-  cliente: string
-  direccion: string
-  proyecto: string
-  ubicacion: string
-  recepcion_n: string
-  f_emision: string
-  ot_n: string
-  codigo_muestra: string
-  fecha_recepcion: string
-  fecha_ejecucion: string
-  cantera_sondaje: string
-  n_muestra: string
-  tipo_muestra: string
-  realizado_por: string
-  condicion_masa_menor: SiNo
-  condicion_capas: SiNo
-  condicion_temperatura: SiNo
-  condicion_excluido: SiNo
+  // Aliases used by the Contenido de Humedad frontend
+  muestra?: string
+  numero_ot?: string
+  fecha_ensayo?: string
+
+  cliente?: string
+  direccion?: string
+  proyecto?: string
+  ubicacion?: string
+  recepcion_n?: string
+  f_emision?: string
+  ot_n?: string
+  codigo_muestra?: string
+  fecha_recepcion?: string
+  fecha_ejecucion?: string
+  cantera_sondaje?: string
+  n_muestra?: string
+  tipo_muestra?: string
+  realizado_por?: string
+  condicion_masa_menor?: SiNo
+  condicion_capas?: SiNo
+  condicion_temperatura?: SiNo
+  condicion_excluido?: SiNo
   descripcion_material_excluido?: string
   condicion_muestra?: string
   tamano_maximo_particula?: string
   forma_particula?: string
-  metodo_prueba: MetodoPrueba
-  metodo_a: boolean
-  metodo_b: boolean
+  metodo_prueba?: MetodoPrueba
+  metodo_a?: boolean
+  metodo_b?: boolean
   numero_ensayo?: number
   recipiente_numero?: string
   masa_recipiente_muestra_humeda?: number
@@ -44,6 +49,18 @@ export interface HumedadCompleteDemoPayload {
   revisado_fecha?: string
   aprobado_por?: string
   aprobado_fecha?: string
+
+  masa_recipiente_muestra_humedo_g?: number
+  masa_recipiente_muestra_seco_g?: number
+  masa_recipiente_muestra_seco_constante_g?: number
+  masa_agua_g?: number
+  masa_recipiente_g?: number
+  masa_muestra_seco_g?: number
+  contenido_humedad_pct?: number
+  cumple_masa_minima_norma?: SiNo
+  se_excluyo_material?: SiNo
+  balanza_01g_codigo?: string
+  horno_110c_codigo?: string
 }
 
 export interface HumedadCompleteDemoSummary {
@@ -77,3 +94,10 @@ export interface HumedadCompleteDemoSaveResponse {
   fecha_creacion?: string | null
   fecha_actualizacion?: string | null
 }
+
+// Compatibility aliases for the Contenido de Humedad frontend layout
+export type SiNoSelect = SiNo
+export type ContHumedadPayload = HumedadCompleteDemoPayload
+export type ContHumedadEnsayoSummary = HumedadCompleteDemoSummary
+export type ContHumedadEnsayoDetail = HumedadCompleteDemoDetail
+export type ContHumedadSaveResponse = HumedadCompleteDemoSaveResponse
