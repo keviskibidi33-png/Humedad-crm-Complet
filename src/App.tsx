@@ -1,95 +1,87 @@
-import { useEffect, useState, type ReactNode } from 'react'
-import { Toaster } from 'react-hot-toast'
-import HumedadForm from './pages/HumedadForm'
-import CBRForm from './pages/CBRForm'
-import { SessionGuard } from './components/SessionGuard'
+import { useEffect, useState, type ReactNode } from "react"
+import { Toaster } from "react-hot-toast"
+import HumedadForm from "./pages/HumedadForm"
+import { SessionGuard } from "./components/SessionGuard"
 
-const CRM_LOGIN_URL = import.meta.env.VITE_CRM_LOGIN_URL || 'http://localhost:3000/login'
+const CRM_LOGIN_URL = import.meta.env.VITE_CRM_LOGIN_URL || "http://localhost:3000/login"
 
 function AccessGate({ children }: { children: ReactNode }) {
-    const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null)
+  const [authorized, setAuthorized] = useState<boolean | null>(null)
 
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search)
-        const tokenFromUrl = params.get('token')
-
-        if (tokenFromUrl) {
-            localStorage.setItem('token', tokenFromUrl)
-        }
-
-        const token = tokenFromUrl || localStorage.getItem('token')
-        const isEmbedded = window.parent !== window
-        const authorized = !!tokenFromUrl || (isEmbedded && !!token)
-        setIsAuthorized(authorized)
-    }, [])
-
-    if (isAuthorized === null) return null
-
-    if (!isAuthorized) {
-        return (
-            <div className="min-h-screen flex flex-col bg-white">
-                <div className="flex-1 flex items-center justify-center px-4">
-                    <div className="w-full max-w-sm text-center">
-                        <div className="mb-8">
-                            <img src="/geofal.svg" alt="Geofal" className="h-14 mx-auto" style={{ filter: 'grayscale(100%) contrast(1.2)' }} />
-                        </div>
-
-                        <div className="mx-auto w-12 h-12 border-2 border-black rounded-full flex items-center justify-center mb-6">
-                            <svg className="w-5 h-5 text-black" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                                <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                            </svg>
-                        </div>
-
-                        <h1 className="text-xl font-bold text-black tracking-wide uppercase mb-3">
-                            Acceso Denegado
-                        </h1>
-
-                        <p className="text-xs text-neutral-500 leading-relaxed mb-8">
-                            Todos los intentos de acceso son registrados y auditados.<br />
-                            Se requiere autenticacion valida desde el CRM.
-                        </p>
-
-                        <button
-                            className="w-full py-3 px-6 bg-black text-white text-sm font-semibold tracking-wide uppercase hover:bg-neutral-800 active:bg-neutral-900 transition-colors"
-                            onClick={() => window.location.assign(CRM_LOGIN_URL)}
-                        >
-                            Ir al CRM
-                        </button>
-                    </div>
-                </div>
-
-                <footer className="py-4 border-t border-neutral-200 text-center">
-                    <div className="flex items-center justify-center gap-4 text-[10px] text-neutral-400 uppercase tracking-widest">
-                        <span>Terminos</span>
-                        <span>&middot;</span>
-                        <span>Licencias</span>
-                        <span>&middot;</span>
-                        <span>Privacidad</span>
-                    </div>
-                    <p className="text-[9px] text-neutral-300 mt-2 tracking-widest uppercase">
-                        &copy; {new Date().getFullYear()} Geofal S.A.S &mdash; Sistema auditado
-                    </p>
-                </footer>
-            </div>
-        )
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    const tokenFromUrl = params.get("token")
+    if (tokenFromUrl) {
+      localStorage.setItem("token", tokenFromUrl)
+      setAuthorized(true)
+      return
     }
 
-    return <>{children}</>
-}
+    if (localStorage.getItem("token")) {
+      setAuthorized(true)
+      return
+    }
 
-function App() {
-    const isCBRRoute = typeof window !== 'undefined' && window.location.pathname.toLowerCase().includes('/cbr')
+    if (window.parent === window) {
+      setAuthorized(false)
+      return
+    }
 
+    let settled = false
+    const requestId = `access-gate-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
+    const cleanup = () => {
+      window.removeEventListener("message", onMessage)
+      clearTimeout(timeoutId)
+    }
+    const finish = (ok: boolean, token?: string | null) => {
+      if (settled) return
+      settled = true
+      cleanup()
+      if (token) localStorage.setItem("token", token)
+      setAuthorized(ok)
+    }
+    const onMessage = (event: MessageEvent) => {
+      if (event.data?.type !== "TOKEN_REFRESH") return
+      const responseRequestId = typeof event.data?.requestId === "string" ? event.data.requestId : null
+      if (responseRequestId && responseRequestId !== requestId) return
+      const token = typeof event.data?.token === "string" && event.data.token.trim() ? event.data.token.trim() : null
+      finish(!!token, token)
+    }
+    const timeoutId = window.setTimeout(() => finish(false), 2500)
+    window.addEventListener("message", onMessage)
+    try {
+      window.parent.postMessage({ type: "TOKEN_REFRESH_REQUEST", requestId, source: "access_gate", reason: "mount-auth" }, "*")
+    } catch {
+      finish(false)
+    }
+  }, [])
+
+  if (authorized === null) return null
+  if (!authorized) {
     return (
-        <div className="min-h-screen bg-background font-sans antialiased">
-            <AccessGate>
-                <SessionGuard />
-                {isCBRRoute ? <CBRForm /> : <HumedadForm />}
-            </AccessGate>
-            <Toaster position="top-right" />
+      <div className="min-h-screen flex items-center justify-center bg-white px-4">
+        <div className="w-full max-w-sm text-center">
+          <img src="/geofal.svg" alt="Geofal" className="mx-auto h-14" />
+          <h1 className="mt-6 text-xl font-bold uppercase tracking-wide text-black">Acceso denegado</h1>
+          <p className="mt-3 text-xs leading-relaxed text-neutral-500">Se requiere autenticación válida desde el CRM para usar este módulo.</p>
+          <button className="mt-8 w-full bg-black px-6 py-3 text-sm font-semibold uppercase tracking-wide text-white" onClick={() => window.location.assign(CRM_LOGIN_URL)}>
+            Ir al CRM
+          </button>
         </div>
+      </div>
     )
+  }
+  return <>{children}</>
 }
 
-export default App
+export default function App() {
+  return (
+    <div className="min-h-screen bg-slate-100 font-sans antialiased">
+      <AccessGate>
+        <SessionGuard />
+        <HumedadForm />
+      </AccessGate>
+      <Toaster position="top-right" />
+    </div>
+  )
+}
