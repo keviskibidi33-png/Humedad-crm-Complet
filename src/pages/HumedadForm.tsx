@@ -20,7 +20,7 @@ const buildFormatPreview = (sampleCode: string | undefined, materialCode: 'SU' |
     const match = fullMatch || partialMatch
     const numero = match?.[1] || 'xxxx'
     const year = (match?.[2] || currentYear).slice(-2)
-    return `Formato N-${numero}-${materialCode}-${year} ${ensayo}`
+  return `Formato N-${numero}-${materialCode}-${year} ${ensayo}`
 }
 
 
@@ -253,11 +253,11 @@ export default function ContHumedadForm() {
       setForm(initialState())
       setEnsayoId(null)
       if (window.parent !== window) window.parent.postMessage({ type: 'CLOSE_MODAL' }, '*')
-      toast.success(download ? 'Contenido de Humedad guardado y descargado.' : 'Contenido de Humedad guardado.')
+      toast.success(download ? 'Humedad suelo guardado y descargado.' : 'Humedad suelo guardado.')
     } catch (err) {
       const msg = axios.isAxiosError(err)
-        ? err.response?.data?.detail || 'No se pudo generar Contenido de Humedad.'
-        : 'No se pudo generar Contenido de Humedad.'
+        ? err.response?.data?.detail || 'No se pudo generar Humedad suelo.'
+        : 'No se pudo generar Humedad suelo.'
       toast.error(msg)
     } finally {
       setLoading(false)
@@ -314,7 +314,7 @@ export default function ContHumedadForm() {
           </div>
 
           <div className="border-b border-slate-300 bg-slate-100 px-4 py-3 text-center">
-            <p className="text-2xl font-semibold leading-tight text-slate-900">Standard Test Method for Total Evaporable Moisture Content of Aggregate by Drying</p>
+            <p className="text-2xl font-semibold leading-tight text-slate-900">Standard Test Method for Liquid Limit, Plastic Limit, and Plasticity Index of Soils</p>
             <p className="text-2xl font-semibold text-slate-900">ASTM D2216-19</p>
           </div>
 
@@ -356,65 +356,87 @@ export default function ContHumedadForm() {
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_420px]">
+            <div className="overflow-hidden rounded-lg border border-slate-300">
+              <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900">
+                Condiciones del ensayo
+              </div>
+              <div className="p-4">
+                <table className="w-full text-sm">
+                  <tbody>
+                    <tr>
+                      <td className="w-[80%] border-b border-r border-slate-300 px-2 py-3 align-top">- La muestra de ensayo tiene una masa menor que la mínima requerida por la norma. (Si/No)</td>
+                      <td className="border-b border-slate-300 p-1 align-middle">
+                        <select className={inputClass} value={form.cumple_masa_minima_norma ?? '-'} onChange={(e) => setSelect('cumple_masa_minima_norma', e.target.value as SiNoSelect)} autoComplete="off" data-lpignore="true">
+                          {(['-', 'SI', 'NO'] as const).map((value) => <option key={value} value={value}>{value}</option>)}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border-b border-r border-slate-300 px-2 py-3 align-top">- La muestra de ensayo presenta mas de un tipo de material (capas, etc.). (Si/No)</td>
+                      <td className="border-b border-slate-300 p-1 align-middle">
+                        <select className={inputClass} value={form.se_excluyo_material ?? '-'} onChange={(e) => setSelect('se_excluyo_material', e.target.value as SiNoSelect)} autoComplete="off" data-lpignore="true">
+                          {(['-', 'SI', 'NO'] as const).map((value) => <option key={value} value={value}>{value}</option>)}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border-b border-r border-slate-300 px-2 py-3 align-top">- La temperatura de secado es diferente a 110 ± 5°C. (Si/No)</td>
+                      <td className="border-b border-slate-300 p-1 align-middle">
+                        <select className={inputClass} value={form.condicion_temperatura ?? '-'} onChange={(e) => setSelect('condicion_temperatura', e.target.value as SiNoSelect)} autoComplete="off" data-lpignore="true">
+                          {(['-', 'SI', 'NO'] as const).map((value) => <option key={value} value={value}>{value}</option>)}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border-r border-slate-300 px-2 py-3 align-top">- Se excluyo algun material (tamano y cantidad) de la muestra de prueba. (Si/No)</td>
+                      <td className="border-slate-300 p-1 align-middle">
+                        <select className={inputClass} value={form.se_excluyo_material ?? '-'} onChange={(e) => setSelect('se_excluyo_material', e.target.value as SiNoSelect)} autoComplete="off" data-lpignore="true">
+                          {(['-', 'SI', 'NO'] as const).map((value) => <option key={value} value={value}>{value}</option>)}
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="border-r border-slate-300 px-2 py-3">Descripción material excluido</td>
+                      <td className="p-1"><input className={inputClass} value={form.descripcion_material_excluido ?? ''} onChange={(e) => setField('descripcion_material_excluido', e.target.value)} autoComplete="off" data-lpignore="true" placeholder="Ej: Se excluyó grava > 3 in, aprox. 450 g" /></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_340px]">
               <div className="overflow-hidden rounded-lg border border-slate-300">
-                <div className="border-b border-slate-300 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-900">
-                  Condiciones del Ensayo
+                <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900">
+                  Descripción de la muestra
                 </div>
                 <table className="w-full text-sm">
                   <tbody>
-                    <tr><td className="w-[58%] border-b border-r border-slate-300 px-2 py-1">* Tipo de muestra</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tipo_muestra ?? ''} onChange={(e) => setField('tipo_muestra', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
-                    <tr><td className="border-b border-r border-slate-300 px-2 py-1">* Tamaño máximo de la muestra (Visual) (in)</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tamano_maximo_muestra_visual_in ?? ''} onChange={(e) => setField('tamano_maximo_muestra_visual_in', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
-                    <tr>
-                      <td className="border-b border-r border-slate-300 px-2 py-1">* La muestra de ensayo tiene una masa menor que la mínima requerida por la norma</td>
-                      <td className="border-b border-slate-300 px-1 py-1">
-                        <select
-                          className={inputClass}
-                          value={form.cumple_masa_minima_norma ?? '-'}
-                          onChange={(e) => setSelect('cumple_masa_minima_norma', e.target.value as SiNoSelect)}
-                          autoComplete="off"
-                          data-lpignore="true"
-                        >
-                          {(['-', 'SI', 'NO'] as const).map((value) => (
-                            <option key={value} value={value}>{value}</option>
-                          ))}
-                        </select>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td className="border-b border-r border-slate-300 px-2 py-1">* La muestra de ensayo presenta más de un tipo de material (capas, etc.)</td>
-                      <td className="border-b border-slate-300 px-1 py-1">
-                        <select
-                          className={inputClass}
-                          value={form.condicion_capas ?? '-'}
-                          onChange={(e) => setSelect('condicion_capas', e.target.value as SiNoSelect)}
-                          autoComplete="off"
-                          data-lpignore="true"
-                        >
-                          {(['-', 'SI', 'NO'] as const).map((value) => (
-                            <option key={value} value={value}>{value}</option>
-                          ))}
-                        </select>
-                      </td>
-                    </tr>
-                    <tr><td className="border-r border-slate-300 px-2 py-1">* La temperatura de secado es diferente a 110 ± 5°C</td><td className="border-r border-slate-300 px-1 py-1"><select className={inputClass} value={form.condicion_temperatura ?? '-'} onChange={(e) => setSelect('condicion_temperatura', e.target.value as SiNoSelect)} autoComplete="off" data-lpignore="true">{(['-', 'SI', 'NO'] as const).map((value) => (<option key={value} value={value}>{value}</option>))}</select></td></tr>
-                    <tr><td className="border-r border-slate-300 px-2 py-1">* Se excluyó algún material (tamaño y cantidad) de la muestra de prueba</td><td className="border-r border-slate-300 px-1 py-1"><select className={inputClass} value={form.se_excluyo_material ?? '-'} onChange={(e) => setSelect('se_excluyo_material', e.target.value as SiNoSelect)} autoComplete="off" data-lpignore="true">{(['-', 'SI', 'NO'] as const).map((value) => (<option key={value} value={value}>{value}</option>))}</select></td></tr>
-                    <tr><td className="border-r border-slate-300 px-2 py-1">Descripción material excluido</td><td className="p-1"><input className={inputClass} value={form.descripcion_material_excluido ?? ''} onChange={(e) => setField('descripcion_material_excluido', e.target.value)} autoComplete="off" data-lpignore="true" placeholder="Ej: Se excluyó grava &gt; 3 in, aprox. 450 g" /></td></tr>
+                    <tr><td className="w-[58%] border-b border-r border-slate-300 px-2 py-2">Tipo de muestra:</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tipo_muestra ?? ''} onChange={(e) => setField('tipo_muestra', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                    <tr><td className="border-b border-r border-slate-300 px-2 py-2">Condición de la muestra:</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.condicion_muestra ?? ''} onChange={(e) => setField('condicion_muestra', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                    <tr><td className="border-b border-r border-slate-300 px-2 py-2">Tamaño máximo de la partícula (visual) (in):</td><td className="border-b border-slate-300 p-1"><input className={inputClass} value={form.tamano_maximo_muestra_visual_in ?? ''} onChange={(e) => setField('tamano_maximo_muestra_visual_in', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                    <tr><td className="border-r border-slate-300 px-2 py-2">Forma de la partícula:</td><td className="p-1"><input className={inputClass} value={form.forma_particula ?? ''} onChange={(e) => setField('forma_particula', e.target.value)} autoComplete="off" data-lpignore="true" placeholder="Ej: Angular 12" /></td></tr>
                   </tbody>
                 </table>
               </div>
 
               <div className="overflow-hidden rounded-lg border border-slate-300">
-                <div className="border-b border-slate-300 bg-slate-50 px-3 py-2 text-sm font-semibold text-slate-900">
-                  Equipos utilizados
+                <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-center text-sm font-semibold text-slate-900">
+                  MÉTODO PRUEBA
                 </div>
-                <table className="w-full text-sm">
-                  <thead className="bg-slate-100 text-xs font-semibold text-slate-800"><tr><th className="border-b border-r border-slate-300 py-1">Equipo</th><th className="border-b border-slate-300 py-1">Código</th></tr></thead>
-                  <tbody>
-                    <tr><td className="border-t border-r border-slate-300 px-2 py-1">Balanza 0.1 g</td><td className="border-t border-slate-300 p-1"><select className={inputClass} value={form.balanza_01g_codigo ?? '-'} onChange={(e) => setField('balanza_01g_codigo', e.target.value)}>{withCurrentOption(form.balanza_01g_codigo, EQUIPO_OPTIONS.balanza_01g_codigo).map((opt) => <option key={opt} value={opt}>{opt}</option>)}</select></td></tr>
-                    <tr><td className="border-t border-r border-slate-300 px-2 py-1">Horno 110°C</td><td className="border-t border-slate-300 p-1"><select className={inputClass} value={form.horno_110c_codigo ?? '-'} onChange={(e) => setField('horno_110c_codigo', e.target.value)}>{withCurrentOption(form.horno_110c_codigo, EQUIPO_OPTIONS.horno_110c_codigo).map((opt) => <option key={opt} value={opt}>{opt}</option>)}</select></td></tr>
-                  </tbody>
-                </table>
+                <div className="p-3">
+                  <label className="mb-2 block text-sm text-center font-medium text-slate-700">MÉTODO &quot;A&quot; o &quot;B&quot;</label>
+                  <select
+                    className={inputClass}
+                    value={form.metodo_prueba ?? '-'}
+                    onChange={(e) => setField('metodo_prueba', e.target.value as ContHumedadPayload['metodo_prueba'])}
+                    autoComplete="off"
+                    data-lpignore="true"
+                  >
+                    {(['-', 'A', 'B'] as const).map((value) => (
+                      <option key={value} value={value}>{value}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -475,4 +497,3 @@ export default function ContHumedadForm() {
     </div>
   )
 }
-
