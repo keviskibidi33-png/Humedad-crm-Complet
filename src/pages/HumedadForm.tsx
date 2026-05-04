@@ -314,7 +314,7 @@ export default function ContHumedadForm() {
           </div>
 
           <div className="border-b border-slate-300 bg-slate-100 px-4 py-3 text-center">
-            <p className="text-2xl font-semibold leading-tight text-slate-900">Standard Test Method for Liquid Limit, Plastic Limit, and Plasticity Index of Soils</p>
+            <p className="text-2xl font-semibold leading-tight text-slate-900">Standard Test Method for Laboratory Determination of Water (Moisture) Content of Soil and Rock by Mass</p>
             <p className="text-2xl font-semibold text-slate-900">ASTM D2216-19</p>
           </div>
 
