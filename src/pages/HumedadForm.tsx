@@ -321,43 +321,6 @@ export default function ContHumedadForm() {
           <div className="space-y-3 p-3">
             <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_340px]">
               <div className="overflow-hidden rounded-lg border border-slate-300">
-                <table className="w-full table-fixed text-sm">
-                <thead className="bg-slate-100 text-xs font-semibold text-slate-800">
-                  <tr>
-                    <th className="w-10 border-b border-r border-slate-300 py-1">#</th>
-                    <th className="border-b border-r border-slate-300 px-2 py-1 text-left">DESCRIPCION</th>
-                    <th className="w-20 border-b border-r border-slate-300 py-1">UND</th>
-                    <th className="w-56 border-b border-slate-300 py-1">ENSAYO</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">1</td><td className="border-t border-r border-slate-300 px-2 py-1">N° de ensayo</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">N°</td><td className="border-t border-slate-300 p-1"><input type="number" step="1" className={inputClass} value={computed.numero_ensayo ?? ''} onChange={(e) => setField('numero_ensayo', parseNum(e.target.value))} /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">2</td><td className="border-t border-r border-slate-300 px-2 py-1">Recipiente N°</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">N°</td><td className="border-t border-slate-300 p-1"><input className={inputClass} value={form.recipiente_numero ?? ''} onChange={(e) => setField('recipiente_numero', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">3</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de recipiente + muestra humedo</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" className={inputClass} value={computed.masa_recipiente_muestra_humedo_g ?? ''} onChange={(e) => setField('masa_recipiente_muestra_humedo_g', parseNum(e.target.value))} /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">4</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de recipiente + muestra seco</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" className={inputClass} value={computed.masa_recipiente_muestra_seco_g ?? ''} onChange={(e) => setField('masa_recipiente_muestra_seco_g', parseNum(e.target.value))} /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">5</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de recipiente + muestra seco (constante)</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" className={inputClass} value={computed.masa_recipiente_muestra_seco_constante_g ?? ''} onChange={(e) => setField('masa_recipiente_muestra_seco_constante_g', parseNum(e.target.value))} /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">6</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de agua (3-4)</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" readOnly className={roInputClass} value={computed.masa_agua_g ?? ''} /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">7</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de recipiente</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" className={inputClass} value={computed.masa_recipiente_g ?? ''} onChange={(e) => setField('masa_recipiente_g', parseNum(e.target.value))} /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">8</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de muestra seco (5-7)</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" readOnly className={roInputClass} value={computed.masa_muestra_seco_g ?? ''} /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">9</td><td className="border-t border-r border-slate-300 px-2 py-1">Contenido de Humedad de la muestra (6/8*100)</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">%</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" readOnly className={roInputClass} value={computed.contenido_humedad_pct ?? ''} /></td></tr>
-                  <tr><td className="border-t border-r border-slate-300 px-2 py-1"></td><td colSpan={3} className="border-t border-r border-slate-300 px-2 py-1 text-xs text-slate-600">Fuente: Elaboracion propia basada en la Norma ASTM D2216-19. * Reporte al 0.1%.</td></tr>
-                </tbody>
-                </table>
-              </div>
-
-              <div className="overflow-hidden rounded-lg border border-slate-300 bg-white p-2">
-                <img
-                  src="/cont-humedad-masa-minima.png"
-                  alt="Tabla de masa minima ASTM D2216-19"
-                  className="w-full h-auto"
-                  loading="lazy"
-                />
-                <div className="border-t border-slate-300 px-2 py-1 text-[10px] text-slate-600">Fuente: Elaboracion propia basada en la Norma ASTM D2216-19.</div>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_340px]">
-              <div className="overflow-hidden rounded-lg border border-slate-300">
                 <div className="border-b border-slate-300 bg-slate-50 px-4 py-3 text-sm font-semibold text-slate-900">
                   Descripción de la muestra
                 </div>
@@ -437,6 +400,43 @@ export default function ContHumedadForm() {
                     </tr>
                   </tbody>
                 </table>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-3 xl:grid-cols-[1fr_340px]">
+              <div className="overflow-hidden rounded-lg border border-slate-300">
+                <table className="w-full table-fixed text-sm">
+                <thead className="bg-slate-100 text-xs font-semibold text-slate-800">
+                  <tr>
+                    <th className="w-10 border-b border-r border-slate-300 py-1">#</th>
+                    <th className="border-b border-r border-slate-300 px-2 py-1 text-left">DESCRIPCION</th>
+                    <th className="w-20 border-b border-r border-slate-300 py-1">UND</th>
+                    <th className="w-56 border-b border-slate-300 py-1">ENSAYO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">1</td><td className="border-t border-r border-slate-300 px-2 py-1">N° de ensayo</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">N°</td><td className="border-t border-slate-300 p-1"><input type="number" step="1" className={inputClass} value={computed.numero_ensayo ?? ''} onChange={(e) => setField('numero_ensayo', parseNum(e.target.value))} /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">2</td><td className="border-t border-r border-slate-300 px-2 py-1">Recipiente N°</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">N°</td><td className="border-t border-slate-300 p-1"><input className={inputClass} value={form.recipiente_numero ?? ''} onChange={(e) => setField('recipiente_numero', e.target.value)} autoComplete="off" data-lpignore="true" /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">3</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de recipiente + muestra humedo</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" className={inputClass} value={computed.masa_recipiente_muestra_humedo_g ?? ''} onChange={(e) => setField('masa_recipiente_muestra_humedo_g', parseNum(e.target.value))} /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">4</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de recipiente + muestra seco</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" className={inputClass} value={computed.masa_recipiente_muestra_seco_g ?? ''} onChange={(e) => setField('masa_recipiente_muestra_seco_g', parseNum(e.target.value))} /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">5</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de recipiente + muestra seco (constante)</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" className={inputClass} value={computed.masa_recipiente_muestra_seco_constante_g ?? ''} onChange={(e) => setField('masa_recipiente_muestra_seco_constante_g', parseNum(e.target.value))} /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">6</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de agua (3-4)</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" readOnly className={roInputClass} value={computed.masa_agua_g ?? ''} /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">7</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de recipiente</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" className={inputClass} value={computed.masa_recipiente_g ?? ''} onChange={(e) => setField('masa_recipiente_g', parseNum(e.target.value))} /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">8</td><td className="border-t border-r border-slate-300 px-2 py-1">Masa de muestra seco (5-7)</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">g</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" readOnly className={roInputClass} value={computed.masa_muestra_seco_g ?? ''} /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1 text-center">9</td><td className="border-t border-r border-slate-300 px-2 py-1">Contenido de Humedad de la muestra (6/8*100)</td><td className="border-t border-r border-slate-300 px-2 py-1 text-center">%</td><td className="border-t border-slate-300 p-1"><input type="number" step="any" readOnly className={roInputClass} value={computed.contenido_humedad_pct ?? ''} /></td></tr>
+                  <tr><td className="border-t border-r border-slate-300 px-2 py-1"></td><td colSpan={3} className="border-t border-r border-slate-300 px-2 py-1 text-xs text-slate-600">Fuente: Elaboracion propia basada en la Norma ASTM D2216-19. * Reporte al 0.1%.</td></tr>
+                </tbody>
+                </table>
+              </div>
+
+              <div className="overflow-hidden rounded-lg border border-slate-300 bg-white p-2">
+                <img
+                  src="/cont-humedad-masa-minima.png"
+                  alt="Tabla de masa minima ASTM D2216-19"
+                  className="w-full h-auto"
+                  loading="lazy"
+                />
+                <div className="border-t border-slate-300 px-2 py-1 text-[10px] text-slate-600">Fuente: Elaboracion propia basada en la Norma ASTM D2216-19.</div>
               </div>
             </div>
 
