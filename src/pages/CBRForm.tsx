@@ -30,11 +30,8 @@ const buildFormatPreview = (sampleCode: string | undefined, materialCode: 'SU' |
 
 const getCurrentYearShort = () => new Date().getFullYear().toString().slice(-2)
 const formatTodayShortDate = () => {
-    const d = new Date()
-    const dd = String(d.getDate()).padStart(2, '0')
-    const mm = String(d.getMonth() + 1).padStart(2, '0')
-    const yy = String(d.getFullYear()).slice(-2)
-    return `${dd}/${mm}/${yy}`
+    const [yyyy = '', mm = '', dd = ''] = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Lima' }).split('-')
+    return `${dd}/${mm}/${yyyy.slice(-2)}`
 }
 
 const normalizeMuestraCode = (raw: string): string => {
@@ -888,7 +885,12 @@ export default function CBRForm() {
                             label="Revisado por"
                             value={form.revisado_por || '-'}
                             options={REVISADO_POR_OPTIONS}
-                            onChange={v => set('revisado_por', v)}
+                            onChange={v => {
+                                set('revisado_por', v)
+                                if (v !== '-') {
+                                    set('revisado_fecha', formatTodayShortDate())
+                                }
+                            }}
                         />
                         <Input
                             label="Fecha revision"
@@ -901,7 +903,12 @@ export default function CBRForm() {
                             label="Aprobado por"
                             value={form.aprobado_por || '-'}
                             options={APROBADO_POR_OPTIONS}
-                            onChange={v => set('aprobado_por', v)}
+                            onChange={v => {
+                                set('aprobado_por', v)
+                                if (v !== '-') {
+                                    set('aprobado_fecha', formatTodayShortDate())
+                                }
+                            }}
                         />
                         <Input
                             label="Fecha aprobacion"
