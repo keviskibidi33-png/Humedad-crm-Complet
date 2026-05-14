@@ -31,7 +31,7 @@ const APROBADORES = ['-', 'IRMA COAQUIRA'] as const
 
 const EQUIPO_OPTIONS = {
   balanza_01g_codigo: ['-', 'EQP-0046'],
-  horno_110c_codigo: ['-', 'EQP-0049'],
+  horno_110c_codigo: ['-', 'EQP-0150'],
 } as const
 
 const withCurrentOption = (value: string | null | undefined, base: readonly string[]) => {
